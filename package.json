@@ -1,0 +1,12 @@
+{
+  "name": "create-argo-application",
+  "version": "0.1.0",
+  "description": "A custom Backstage scaffolder action to create ArgoCD `Application` custom resource in the cluster Backstage is running.",
+  "main": "index.js",
+  "repository": "https://github.com/muvaf/create-argo-application",
+  "author": "Muvaffak Onus <me@muvaf.com>",
+  "license": "Apache 2.0",
+  "dependencies": {
+    "@backstage/plugin-scaffolder-backend": "^1.7.0"
+  }
+}

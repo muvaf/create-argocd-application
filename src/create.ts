@@ -61,7 +61,7 @@ export const createArgoCDHelmApplicationAction = () => {
             kc.loadFromDefault();
             const client = kc.makeApiClient(CustomObjectsApi);
             const fsReadFileP = promisify(fs.readFile);
-            const specString = await fsReadFileP('template-application.yaml', 'utf8');
+            const specString = await fsReadFileP('../template-application.yaml', 'utf8');
             const obj = yaml.load(specString);
             obj.metadata.name = ctx.input.name;
             obj.spec.destination.namespace = ctx.input.name

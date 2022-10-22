@@ -1,5 +1,5 @@
 {
-  "name": "create-argo-application",
+  "name": "create-argocd-application",
   "version": "0.1.0",
   "description": "A custom Backstage scaffolder action to create ArgoCD `Application` custom resource in the cluster Backstage is running.",
   "main": "index.js",

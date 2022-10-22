@@ -1,6 +1,6 @@
 {
   "name": "create-argo-application",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A custom Backstage scaffolder action to create ArgoCD `Application` custom resource in the cluster Backstage is running.",
   "main": "src/create.ts",
   "repository": "https://github.com/muvaf/create-argocd-application",

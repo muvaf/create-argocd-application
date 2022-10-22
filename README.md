@@ -11,5 +11,5 @@ you decide to use it.
 Add to your Backstage app.
 ```bash
 # From your Backstage root directory
-yarn add --cwd packages/backend @muvaf/create-argocd-application
+yarn add --cwd packages/backend @muvaf/create-argo-application
 ```

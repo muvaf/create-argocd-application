@@ -1,18 +1,36 @@
 import { createTemplateAction } from '@backstage/plugin-scaffolder-backend';
 import fs from 'fs-extra';
+import {KubeConfig, CustomObjectsApi} from '@kubernetes/client-node';
+import { promisify } from 'util';
+import * as yaml from 'js-yaml';
+
+type Input = {
+    name: string;
+    namespace: string;
+    chart: {
+        name: string;
+        repo: string;
+        version: string;
+    };
+}
 
 export const createArgoCDHelmApplicationAction = () => {
-    return createTemplateAction<{ contents: string; filename: string }>({
+    return createTemplateAction<Input>({
         id: 'argocd:create-helm-application',
         schema: {
             input: {
                 type: 'object',
-                required: ['name', 'chart'],
+                required: ['name', 'namespace', 'chart'],
                 properties: {
                     name: {
                         type: 'string',
                         title: 'Name',
                         description: 'The name of the Application',
+                    },
+                    namespace: {
+                        type: 'string',
+                        title: 'Namespace',
+                        description: 'The namespace of the Application',
                     },
                     chart: {
                         type: 'object',
@@ -39,32 +57,30 @@ export const createArgoCDHelmApplicationAction = () => {
             },
         },
         async handler(ctx) {
-            await fs.outputFile(
-                `${ctx.workspacePath}/${ctx.input.filename}`,
-                ctx.input.contents,
-            );
+            const kc = new KubeConfig();
+            kc.loadFromDefault();
+            const client = kc.makeApiClient(CustomObjectsApi);
+            const fsReadFileP = promisify(fs.readFile);
+            const specString = await fsReadFileP('template-application.yaml', 'utf8');
+            const obj = yaml.load(specString);
+            obj.metadata.name = ctx.input.name;
+            obj.spec.destination.namespace = ctx.input.name
+            obj.spec.source.chart = ctx.input.chart.name;
+            obj.spec.source.repoURL = ctx.input.chart.repo;
+            obj.spec.source.targetRevision = ctx.input.chart.version;
+
+            // Server-side apply.
+            await client.patchClusterCustomObject(
+                'argoproj.io',
+                'v1alpha1',
+                'applications',
+                obj.metadata.name,
+                obj,
+                '',
+                'backstage',
+                true,
+                { headers: { 'Content-Type': 'application/apply-patch+yaml' } }
+            )
         },
     });
 };
-
-// apiVersion: argoproj.io/v1alpha1
-// kind: Application
-// metadata:
-//     name: muvaf-kubecon-testing
-// spec:
-//     destination:
-//         name: ''
-// namespace: muvaf-kubecon-testing
-// server: 'https://kubernetes.default.svc'
-// source:
-//     path: ''
-// repoURL: ghcr.io/muvaf
-// targetRevision: 0.1.0
-// chart: muvaf-kubecon-testing-chart
-// project: default
-// syncPolicy:
-//     automated:
-//         prune: false
-// selfHeal: false
-// syncOptions:
-//     - CreateNamespace=true

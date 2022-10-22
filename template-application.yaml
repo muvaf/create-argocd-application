@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: to-be-changed
+spec:
+  destination:
+    namespace: to-be-changed
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: to-be-changed
+    repoURL: to-be-changed
+    targetRevision: to-be-changed
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

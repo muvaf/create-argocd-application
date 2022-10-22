@@ -7,6 +7,7 @@
   "author": "Muvaffak Onus <me@muvaf.com>",
   "license": "Apache 2.0",
   "dependencies": {
-    "@backstage/plugin-scaffolder-backend": "^1.7.0"
+    "@backstage/plugin-scaffolder-backend": "^1.7.0",
+    "@kubernetes/client-node": "^0.17.1"
   }
 }

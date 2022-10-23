@@ -107,7 +107,7 @@ export const createArgoCDHelmApplicationAction = () => {
                 },
                 (err) => {
                     ctx.logger.error(
-                        `Failed to make PATCH call for ${obj.metadata.namespace}/${obj.metadata.name} Application: Body ${JSON.stringify(err.body)} Response ${JSON.stringify(err.response)}.`
+                        `Failed to make PATCH call for ${obj.metadata.namespace}/${obj.metadata.name} Application: Body ${JSON.stringify(err.body, null, 2)} Response ${JSON.stringify(err.response, null, 2)}.`
                     );
                     throw err;
                 }

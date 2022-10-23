@@ -1,13 +1,51 @@
 {
   "name": "create-argo-application",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A custom Backstage scaffolder action to create ArgoCD `Application` custom resource in the cluster Backstage is running.",
   "main": "src/create.ts",
-  "repository": "https://github.com/muvaf/create-argocd-application",
+  "types": "src/types.ts",
+  "publishConfig": {
+    "access": "public",
+    "main": "src/create.ts",
+    "types": "src/types.ts"
+  },
+  "backstage": {
+    "role": "backend-plugin-module"
+  },
+  "scripts": {
+    "start": "backstage-cli package start",
+    "build": "backstage-cli package build",
+    "lint": "backstage-cli package lint",
+    "test": "backstage-cli package test",
+    "clean": "backstage-cli package clean",
+    "prepack": "backstage-cli package prepack",
+    "postpack": "backstage-cli package postpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muvaf/create-argocd-application"
+  },
+  "keywords": [
+    "backstage",
+    "argocd",
+    "argo",
+    "kubernetes",
+    "backstage-scaffolder",
+    "backstage-plugin",
+    "backstage-template"
+  ],
   "author": "Muvaffak Onus <me@muvaf.com>",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "dependencies": {
     "@backstage/plugin-scaffolder-backend": "^1.7.0",
-    "@kubernetes/client-node": "^0.17.1"
+    "@kubernetes/client-node": "^0.17.1",
+    "yaml": "^2.1.3"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@backstage/cli": "^0.20.0",
+    "@types/node": "^18.11.3"
   }
 }

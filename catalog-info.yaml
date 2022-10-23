@@ -1,0 +1,25 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: scaffolder-backend-module-create-argocd-application
+  description: |
+    A custom Backstage scaffolder action to create ArgoCD `Application` custom resource in the cluster Backstage is running.
+  links:
+    - title: Repository
+      url: https://github.com/muvaf/create-argocd-application
+    - title: npm
+      url: https://www.npmjs.com/package/create-argo-application
+  annotations:
+    github.com/project-slug: muvaf/create-argocd-application
+  tags:
+    - backstage
+    - argocd
+    - kubernetes
+    - argo
+    - application
+    - plugin
+    - template
+spec:
+  type: library
+  owner: muvaf
+  lifecycle: production

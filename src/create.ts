@@ -1,18 +1,8 @@
 import { createTemplateAction } from '@backstage/plugin-scaffolder-backend';
-import fs from 'fs-extra';
 import {KubeConfig, CustomObjectsApi} from '@kubernetes/client-node';
-import { promisify } from 'util';
-import * as yaml from 'js-yaml';
-
-type Input = {
-    name: string;
-    namespace: string;
-    chart: {
-        name: string;
-        repo: string;
-        version: string;
-    };
-}
+import * as fs from 'fs';
+import YAML from 'yaml';
+import {Input} from './types';
 
 export const createArgoCDHelmApplicationAction = () => {
     return createTemplateAction<Input>({
@@ -60,9 +50,8 @@ export const createArgoCDHelmApplicationAction = () => {
             const kc = new KubeConfig();
             kc.loadFromDefault();
             const client = kc.makeApiClient(CustomObjectsApi);
-            const fsReadFileP = promisify(fs.readFile);
-            const specString = await fsReadFileP('../template-application.yaml', 'utf8');
-            const obj = yaml.load(specString);
+            const data = fs.readFileSync('../template-application.yaml', 'utf8');
+            const obj = YAML.parse(data);
             obj.metadata.name = ctx.input.name;
             obj.spec.destination.namespace = ctx.input.name
             obj.spec.source.chart = ctx.input.chart.name;

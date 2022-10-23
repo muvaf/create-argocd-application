@@ -1,16 +1,21 @@
 {
   "name": "@muvaf/create-argocd-application",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "description": "A custom Backstage scaffolder action to create ArgoCD `Application` custom resource in the cluster Backstage is running.",
-  "main": "dist/index.cjs.ts",
+  "main": "dist/index.cjs.js",
   "types": "dist/index.d.ts",
+  "private": false,
   "publishConfig": {
     "access": "public",
-    "main": "dist/index.cjs.ts",
+    "main": "dist/index.cjs.js",
     "types": "dist/index.d.ts"
   },
   "backstage": {
     "role": "backend-plugin-module"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muvaf/create-argocd-application.git"
   },
   "scripts": {
     "start": "backstage-cli package start",
@@ -20,10 +25,6 @@
     "clean": "backstage-cli package clean",
     "prepack": "backstage-cli package prepack",
     "postpack": "backstage-cli package postpack"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/muvaf/create-argocd-application.git"
   },
   "keywords": [
     "backstage",

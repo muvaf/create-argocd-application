@@ -1,7 +1,25 @@
 import { createTemplateAction } from '@backstage/plugin-scaffolder-backend';
 import {KubeConfig, CustomObjectsApi} from '@kubernetes/client-node';
-import * as fs from 'fs';
 import YAML from 'yaml';
+
+const tmpl = `apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: to-be-changed
+spec:
+  destination:
+    namespace: to-be-changed
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: to-be-changed
+    repoURL: to-be-changed
+    targetRevision: to-be-changed
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true`;
 
 export const createArgoCDHelmApplicationAction = () => {
     return createTemplateAction<{
@@ -32,6 +50,7 @@ export const createArgoCDHelmApplicationAction = () => {
                     chart: {
                         type: 'object',
                         required: ['repo', 'name', 'version'],
+                        description: 'Details of the Helm chart to be used',
                         properties: {
                             repo: {
                                 type: 'string',
@@ -57,25 +76,41 @@ export const createArgoCDHelmApplicationAction = () => {
             const kc = new KubeConfig();
             kc.loadFromDefault();
             const client = kc.makeApiClient(CustomObjectsApi);
-            const data = fs.readFileSync('../template-application.yaml', 'utf8');
-            const obj = YAML.parse(data);
+            const obj = YAML.parse(tmpl);
             obj.metadata.name = ctx.input.name;
+            if (process.env.POD_NAMESPACE === undefined) {
+                throw new Error('POD_NAMESPACE is not set');
+            }
+            obj.metadata.namespace = process.env.POD_NAMESPACE;
             obj.spec.destination.namespace = ctx.input.name
             obj.spec.source.chart = ctx.input.chart.name;
             obj.spec.source.repoURL = ctx.input.chart.repo;
             obj.spec.source.targetRevision = ctx.input.chart.version;
 
             // Server-side apply.
-            await client.patchClusterCustomObject(
+            await client.patchNamespacedCustomObject(
                 'argoproj.io',
                 'v1alpha1',
+                obj.metadata.namespace,
                 'applications',
                 obj.metadata.name,
                 obj,
-                '',
+                undefined,
                 'backstage',
                 true,
                 { headers: { 'Content-Type': 'application/apply-patch+yaml' } }
+            ).then(
+                (resp) => {
+                    ctx.logger.info(
+                        `Successfully created ${obj.metadata.namespace}/${obj.metadata.name} Application: HTTP ${resp.response.statusCode}`
+                    );
+                },
+                (err) => {
+                    ctx.logger.error(
+                        `Failed to make PATCH call for ${obj.metadata.namespace}/${obj.metadata.name} Application: Body ${JSON.stringify(err.body)} Response ${JSON.stringify(err.response)}.`
+                    );
+                    throw err;
+                }
             )
         },
     });

@@ -2,7 +2,7 @@
   "extends": "@backstage/cli/config/tsconfig.json",
   "include": ["src"],
   "compilerOptions": {
-    "outDir": "dist-types",
+    "outDir": "dist",
     "rootDir": ".",
     "useUnknownInCatchVariables": false
   }

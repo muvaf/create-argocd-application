@@ -2,7 +2,16 @@ import { createTemplateAction } from '@backstage/plugin-scaffolder-backend';
 import {KubeConfig, CustomObjectsApi} from '@kubernetes/client-node';
 import * as fs from 'fs';
 import YAML from 'yaml';
-import {Input} from './types';
+
+export type Input = {
+    name: string;
+    namespace: string;
+    chart: {
+        name: string;
+        repo: string;
+        version: string;
+    };
+}
 
 export const createArgoCDHelmApplicationAction = () => {
     return createTemplateAction<Input>({

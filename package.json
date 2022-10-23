@@ -1,13 +1,13 @@
 {
   "name": "create-argo-application",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A custom Backstage scaffolder action to create ArgoCD `Application` custom resource in the cluster Backstage is running.",
-  "main": "dist-types/index.d.ts",
-  "types": "dist-types/index.d.ts",
+  "main": "dist/index.cjs.ts",
+  "types": "dist/index.d.ts",
   "publishConfig": {
     "access": "public",
-    "main": "src/create.ts",
-    "types": "src/types.ts"
+    "main": "dist/index.cjs.ts",
+    "types": "dist/index.d.ts"
   },
   "backstage": {
     "role": "backend-plugin-module"

@@ -1,0 +1,1 @@
+export { githubWaitLastWorkflow } from "./wait";

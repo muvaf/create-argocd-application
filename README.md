@@ -37,7 +37,7 @@ import { createRouter, createBuiltinActions } from '@backstage/plugin-scaffolder
 import { ScmIntegrations } from '@backstage/integration';
 import { Router } from 'express';
 import type { PluginEnvironment } from '../types';
-import { createArgoCDHelmApplicationAction } from "@muvaf/create-argocd-application";
+import { argocdCreateHelmApplication, githubWaitLastWorkflow } from "@muvaf/create-argocd-application";
 
 export default async function createPlugin(
   env: PluginEnvironment,
@@ -54,7 +54,8 @@ export default async function createPlugin(
 
   const actions = [
       ...builtInActions,
-    createArgoCDHelmApplicationAction()
+      argocdCreateHelmApplication(),
+      githubWaitLastWorkflow({ integrations })
   ]
 
   return await createRouter({

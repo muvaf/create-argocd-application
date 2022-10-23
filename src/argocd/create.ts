@@ -19,13 +19,7 @@ spec:
     automated:
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
-    retry:
-      limit: 100
-      backoff:
-        duration: 3s
-        factor: 2
-        maxDuration: 10s`;
+      - CreateNamespace=true`;
 
 export const argocdCreateHelmApplication = () => {
     return createTemplateAction<{

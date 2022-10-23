@@ -1,6 +1,6 @@
 {
   "name": "@muvaf/create-argocd-application",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A custom Backstage scaffolder action to create ArgoCD `Application` custom resource in the cluster Backstage is running.",
   "main": "dist/index.cjs.ts",
   "types": "dist/index.d.ts",

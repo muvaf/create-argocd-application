@@ -3,18 +3,16 @@ import {KubeConfig, CustomObjectsApi} from '@kubernetes/client-node';
 import * as fs from 'fs';
 import YAML from 'yaml';
 
-export type Input = {
-    name: string;
-    namespace: string;
-    chart: {
-        name: string;
-        repo: string;
-        version: string;
-    };
-}
-
 export const createArgoCDHelmApplicationAction = () => {
-    return createTemplateAction<Input>({
+    return createTemplateAction<{
+        name: string;
+        namespace: string;
+        chart: {
+            name: string;
+            repo: string;
+            version: string;
+        };
+    }>({
         id: 'argocd:create-helm-application',
         schema: {
             input: {

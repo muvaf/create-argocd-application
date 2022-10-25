@@ -31,7 +31,7 @@ export const argocdCreateHelmApplication = () => {
             version: string;
         };
     }>({
-        id: 'argocd:argocd-helm-application',
+        id: 'argocd:create-helm-application',
         schema: {
             input: {
                 type: 'object',

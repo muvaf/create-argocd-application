@@ -57,13 +57,13 @@ export const githubWaitLastWorkflow  = (options: {
                     if (data.total_count === 0) {
                         return 'not started';
                     }
-                    let pending = ''
+                    let pending = []
                     let success = 0
                     for (const run of data.workflow_runs) {
                         if (run.status === 'failure' || run.status === 'cancelled' || run.status === 'timed_out' || run.status === 'action_required') {
                             throw new Error(`Workflow run failed: ${run.id}: ${run.status}`);
                         }
-                        pending = `${pending}, ${run.id}:${run.status}`;
+                        pending.push(`${run.id}:${run.status}`)
                         if (run.conclusion === 'success') {
                             success++;
                         }
@@ -71,7 +71,7 @@ export const githubWaitLastWorkflow  = (options: {
                     if (success === data.workflow_runs.length) {
                         return 'success';
                     }
-                    ctx.logger.info(`Ongoing workflows: ${pending}`);
+                    ctx.logger.info(`Ongoing workflows: ${pending.join(', ')}`);
                     return 'pending';
                 })
                 if (state === 'success') {

@@ -1,5 +1,11 @@
 # Create ArgoCD Application in Backstage
 
+**IMPORTANT NOTE**: I have created a new custom action 
+[`@muvaf/kubernetes-apply`](https://github.com/muvaf/kubernetes-apply)
+that can deploy any Kubernetes manifest that you may consider using instead of
+this one since it offers much more flexibility about what ArgoCD `Application`
+manifest is applied.
+
 This custom scaffolder action allows you to create ArgoCD `Application` as part
 of your software template.
 
